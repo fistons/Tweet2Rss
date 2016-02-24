@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import urllib.request
+from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 
 """
@@ -19,20 +20,22 @@ class FuckingTweet:
     Class representig a fucking tweet
     """
 
-    def __init__(self, tweet_id, tweet, date, author_name, author_account):
+    def __init__(self, tweet_id, tweet, date, author_name, author_account, link):
         self.id = tweet_id
         self.date = date
         self.tweet = tweet
         self.author_name = author_name
         self.author_account = author_account
+        self.link = link
 
     def __str__(self):
-        return "{} by {} [{}] the {} - [Id. {}]".format(self.tweet, self.author_name, self.author_account, self.date, self.id)
+        return "{} by {} [{}] the {} - [Id. {}] - Link: {}".format(self.tweet, self.author_name
+                                                        , self.author_account, self.date, self.id, self.link)
 
 
 class ShittyParser:
     """
-    Shitty temporary main class
+    Shitty twitter html parser
     """
     TWITTER_BASE_URL = 'https://twitter.com/'
     HEADERS = {'Accept-Language': "en,en-US"}
@@ -49,15 +52,20 @@ class ShittyParser:
         for text in l:
             tweet = text.find('p', attrs={'class': 'tweet-text'}).get_text()
             time = text.find('a', attrs={'class': 'tweet-timestamp'})['title']
-            author = text.find('strong', attrs={'class': 'fullname'}).get_text()
-            username = text.find('span', attrs={'class': 'username'}).get_text()
+            author = text['data-name']
+            username = "@" + text['data-screen-name']
             tweet_id = text['data-tweet-id']
-            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username))
+            link = ShittyParser.TWITTER_BASE_URL + text['data-permalink-path']
+            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link))
 
 
 if __name__ == "__main__":
     m = ShittyParser()
-    m.parse('CanardPCRedac')
+    try:
+        m.parse('CanardPcRedac')
+    except HTTPError:
+        print("Unkown cocky twitter account")
+
     for t in m.tweets:
         print(t)
         print("---")
