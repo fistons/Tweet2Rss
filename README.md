@@ -19,7 +19,7 @@ Then I'm fucked and I will need to change the code.
 
 ### Why do you do this?
 
-Because I don't want to register on their site but style I want to *follow* some interesting account.
+Because I don't want to register on their site but still I want to *follow* some interesting account.
 
 ### Is this legal?
 
