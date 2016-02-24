@@ -13,7 +13,7 @@ No. I aim to directly parse the HTML output of the Twitter website.
 
 You can't right now. And, let's be honnest,  probably never will.
 
-### But if twitter decide to change their HTLM output?
+### But if twitter decide to change their HTML output?
 
 Then I'm fucked and I will need to change the code.
 
