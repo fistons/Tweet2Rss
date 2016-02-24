@@ -19,14 +19,15 @@ class FuckingTweet:
     Class representig a fucking tweet
     """
 
-    def __init__(self, tweet, date, author_name, author_account):
+    def __init__(self, tweet_id, tweet, date, author_name, author_account):
+        self.id = tweet_id
         self.date = date
         self.tweet = tweet
         self.author_name = author_name
         self.author_account = author_account
 
     def __str__(self):
-        return "{} by {} [{}] the {}".format(self.tweet, self.author_name, self.author_account, self.date)
+        return "{} by {} [{}] the {} - [Id. {}]".format(self.tweet, self.author_name, self.author_account, self.date, self.id)
 
 
 class ShittyParser:
@@ -34,6 +35,7 @@ class ShittyParser:
     Shitty temporary main class
     """
     TWITTER_BASE_URL = 'https://twitter.com/'
+    HEADERS = {'Accept-Language': "en,en-US"}
 
     def __init__(self):
         self.tweets = []
@@ -49,7 +51,8 @@ class ShittyParser:
             time = text.find('a', attrs={'class': 'tweet-timestamp'})['title']
             author = text.find('strong', attrs={'class': 'fullname'}).get_text()
             username = text.find('span', attrs={'class': 'username'}).get_text()
-            self.tweets.append(FuckingTweet(tweet, time, author, username))
+            tweet_id = text['data-tweet-id']
+            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username))
 
 
 if __name__ == "__main__":
