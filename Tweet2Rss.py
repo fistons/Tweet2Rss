@@ -26,7 +26,7 @@ class FuckingTweet:
         self.author_account = author_account
 
     def __str__(self):
-        return "{} par {} [{}] le {}".format(self.tweet, self.author_name, self.author_account, self.date)
+        return "{} by {} [{}] the {}".format(self.tweet, self.author_name, self.author_account, self.date)
 
 
 class ShittyParser:
