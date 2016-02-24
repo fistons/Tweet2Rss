@@ -24,3 +24,7 @@ Because I don't want to register on their site but still I want to *follow* some
 ### Is this legal?
 
 Yes. Maybe. I guess.
+
+### Why do you use python instead of cool tecs like node or ruby?
+
+Why don't you go fuck yourself with a showel?
