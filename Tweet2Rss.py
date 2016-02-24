@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import urllib.request
 from urllib.error import HTTPError
 
@@ -40,12 +41,13 @@ class ShittyParser:
     Shitty twitter html parser
     """
     TWITTER_BASE_URL = 'https://twitter.com'
-    HEADERS = {'Accept-Language': "en,en-US"}
+    HEADERS = {'Accept-Language': "en,en_US"}
 
     def __init__(self):
         self.tweets = []
 
     def parse(self, twitter_account):
+        self.tweets.clear()
         with urllib.request.urlopen(ShittyParser.TWITTER_BASE_URL + "/" + twitter_account) as f:
             response = f.read().decode('utf-8')
 
@@ -62,13 +64,22 @@ class ShittyParser:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("You need at leat on argument, now get he fuck out")
+
+    acunts = sys.argv[1:]
     m = ShittyParser()
-    try:
-        m.parse('CanardPcRedac')
-    except HTTPError:
-        print("Unkown cocky twitter account")
 
-    for t in m.tweets:
-        print(t)
-        print("---")
+    for acunt in acunts:
+        try:
+            print("Trying to parse {}".format(acunt))
+            m.parse(acunt)
+        except HTTPError as e:
+            if e.code == 404:
+                print("Unkown cocky twitter account")
+            else:
+                print("dumb twitter shit seems to be down or overloaded or whaterever.")
 
+        for t in m.tweets:
+            print(t)
+            print("---")
