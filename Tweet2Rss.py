@@ -2,6 +2,7 @@
 
 import urllib.request
 from urllib.error import HTTPError
+
 from bs4 import BeautifulSoup
 
 """
@@ -30,21 +31,22 @@ class FuckingTweet:
 
     def __str__(self):
         return "{} by {} [{}] the {} - [Id. {}] - Link: {}".format(self.tweet, self.author_name
-                                                        , self.author_account, self.date, self.id, self.link)
+                                                                   , self.author_account, self.date
+                                                                   , self.id, self.link)
 
 
 class ShittyParser:
     """
     Shitty twitter html parser
     """
-    TWITTER_BASE_URL = 'https://twitter.com/'
+    TWITTER_BASE_URL = 'https://twitter.com'
     HEADERS = {'Accept-Language': "en,en-US"}
 
     def __init__(self):
         self.tweets = []
 
     def parse(self, twitter_account):
-        with urllib.request.urlopen(ShittyParser.TWITTER_BASE_URL + twitter_account) as f:
+        with urllib.request.urlopen(ShittyParser.TWITTER_BASE_URL + "/" + twitter_account) as f:
             response = f.read().decode('utf-8')
 
         soup = BeautifulSoup(response, 'html.parser')
@@ -69,6 +71,4 @@ if __name__ == "__main__":
     for t in m.tweets:
         print(t)
         print("---")
-
-
 
