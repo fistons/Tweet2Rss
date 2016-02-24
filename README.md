@@ -27,4 +27,4 @@ Yes. Maybe. I guess.
 
 ### Why do you use python instead of cool tecs like node or ruby?
 
-Why don't you go fuck yourself with a showel?
+Why don't you go fuck yourself with a shovel?
