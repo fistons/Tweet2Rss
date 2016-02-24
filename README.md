@@ -11,7 +11,7 @@ No. I aim to directly parse the HTML output of the Twitter website.
 
 ### But if I want to follow a protected account?
 
-You can't right now. And, let's be honnest,  probably never will.
+You can't right now. And, let's be honnest, probably never will.
 
 ### But if twitter decide to change their HTML output?
 
