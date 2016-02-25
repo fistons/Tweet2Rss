@@ -5,6 +5,9 @@ Transform Twitter Feeds to Rss
 
 It is a web application written in python use to transform tweet in RSS feed. Well, right now it is more a __concept__, but one day... All you have to do is install the web application on your server and subscribe with your RSS client to something like that *http://tweet2rss.exemple.org/kevadamsss* if you want to contemplate french mediocrity or to something more relevant if you prefer.
 
+### What do I need?
+Right now, python 3.5. Well, I work with Python 3.5, but maybe it works with older version, I don't know. Give it a try. And if doesn't work, too bad then.
+
 ### How does it work?
 
 Just git clone the project, install the requierements and launch Tweet2Rss. Then, open your browser, go to *http://localhost:8080/tw/nadine__morano* for look at one of the best french politian/humorist ever. Right now, it is just plain HTML, but soon, it will become a mighty RSS feed.
