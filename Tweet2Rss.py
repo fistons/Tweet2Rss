@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-import sys
 import urllib.request
 from urllib.error import HTTPError
 
+import cherrypy
 from bs4 import BeautifulSoup
+from jinja2 import Template
 
 """
 Protoype of the web app
@@ -15,6 +16,23 @@ __copyright__ = "Copyright 2016"
 __license__ = "MIT License"
 __version__ = "1.0-SNAPSHOT"
 __status__ = "prototype"
+
+TEMPLATE = """<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Tweets of {{ tweets_acount }}</title>
+</head>
+<body>
+    <ul id="navigation">
+    {% for tweet in tweets %}
+        <li id={{ tweet.id }}>
+            <p>{{ tweet.tweet }}</p>
+            <p>by {{ tweet.author_name }} [{{ tweet.author_account }}] - {{ tweet.date }}
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>"""
 
 
 class FuckingTweet:
@@ -63,23 +81,26 @@ class ShittyParser:
             self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link))
 
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("You need at leat on argument, now get he fuck out")
+class Tweet2Rss(object):
+    def __init__(self):
+        self.parser = ShittyParser()
+        self.template = Template(TEMPLATE)
 
-    acunts = sys.argv[1:]
-    m = ShittyParser()
+    @cherrypy.expose
+    def index(self):
+        return "Yeah, so?"
 
-    for acunt in acunts:
+    @cherrypy.expose
+    def tw(self, username):
         try:
-            print("Trying to parse {}".format(acunt))
-            m.parse(acunt)
+            self.parser.parse(username)
+            return self.template.render(tweets=self.parser.tweets, tweet_account=username)
         except HTTPError as e:
-            if e.code == 404:
-                print("Unkown cocky twitter account")
+            if e.errno == 404:
+                return "Unkown fucking account"
             else:
-                print("dumb twitter shit seems to be down or overloaded or whaterever.")
+                return "Dumb twitter is down again or some retarded bullshits"
 
-        for t in m.tweets:
-            print(t)
-            print("---")
+
+if __name__ == "__main__":
+    cherrypy.quickstart(Tweet2Rss())
