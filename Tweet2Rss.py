@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import datetime
 import urllib.request
 from urllib.error import HTTPError
 
@@ -60,20 +61,24 @@ class ShittyParser:
     """
     TWITTER_BASE_URL = 'https://twitter.com'
     HEADERS = {'Accept-Language': "en,en_US"}
+    DATE_FORMAT = "%I:%M %p - %d %b %Y"
 
     def __init__(self):
         self.tweets = []
 
     def parse(self, twitter_account):
         self.tweets.clear()
-        with urllib.request.urlopen(ShittyParser.TWITTER_BASE_URL + "/" + twitter_account) as f:
+        req = urllib.request.Request(ShittyParser.TWITTER_BASE_URL + "/" + twitter_account,
+                                     headers=ShittyParser.HEADERS)
+        with urllib.request.urlopen(req) as f:
             response = f.read().decode('utf-8')
 
         soup = BeautifulSoup(response, 'html.parser')
         l = soup.findAll('div', attrs={'class': 'original-tweet'})
         for text in l:
             tweet = text.find('p', attrs={'class': 'tweet-text'}).get_text()
-            time = text.find('a', attrs={'class': 'tweet-timestamp'})['title']
+            time_string = text.find('a', attrs={'class': 'tweet-timestamp'})['title']
+            time = datetime.datetime.strptime(time_string, ShittyParser.DATE_FORMAT)
             author = text['data-name']
             username = "@" + text['data-screen-name']
             tweet_id = text['data-tweet-id']
