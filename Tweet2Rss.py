@@ -20,7 +20,7 @@ __status__ = "prototype"
 TEMPLATE = """<!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Tweets of {{ tweets_acount }}</title>
+    <title>Tweets of {{ tweet_account }}</title>
 </head>
 <body>
     <ul id="navigation">
@@ -34,6 +34,25 @@ TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
+
+TEMPLATE_RSS ="""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Tweets of {{ tweet_account }}</title>
+        <description>Tweets of {{ tweet_account }}</description>
+        <link>https://twitter.com/{{ tweet_acccount }}</link>
+        {% for tweet in tweets %}
+        <item>
+            <title>{{ tweet.tweet }}</title>
+            <link>{{ tweet.link }}</link>
+            <pubDate>{{ tweet.date }}</pubDate>
+            <guid>{{ tweet.id }}</guid>
+            <description>{{ tweet.tweet }}</description>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
+"""
 
 class FuckingTweet:
     """
@@ -84,7 +103,7 @@ class ShittyParser:
 class Tweet2Rss(object):
     def __init__(self):
         self.parser = ShittyParser()
-        self.template = Template(TEMPLATE)
+        self.template = Template(TEMPLATE_RSS)
 
     @cherrypy.expose
     def index(self):
