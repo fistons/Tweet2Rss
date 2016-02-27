@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from jinja2 import Template
 
 """
-Protoype of the web app
+Prototype of the web app
 """
 
 __author__ = "Eric \"Fistons\""
@@ -35,7 +35,7 @@ TEMPLATE = """<!DOCTYPE html>
 </html>"""
 
 
-TEMPLATE_RSS ="""<?xml version="1.0" encoding="UTF-8"?>
+TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
         <title>Tweets of {{ tweet_account }}</title>
@@ -53,6 +53,9 @@ TEMPLATE_RSS ="""<?xml version="1.0" encoding="UTF-8"?>
     </channel>
 </rss>
 """
+
+CONFIG_FILE_NAME = "Tweet2Rss.conf"
+
 
 class FuckingTweet:
     """
@@ -122,4 +125,5 @@ class Tweet2Rss(object):
 
 
 if __name__ == "__main__":
-    cherrypy.quickstart(Tweet2Rss())
+    cherrypy.config.update(CONFIG_FILE_NAME)
+    cherrypy.quickstart(Tweet2Rss(), "/", CONFIG_FILE_NAME)
