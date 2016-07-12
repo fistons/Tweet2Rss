@@ -47,7 +47,7 @@ TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
             <link>{{ tweet.link }}</link>
             <pubDate>{{ tweet.date }}</pubDate>
             <guid>{{ tweet.id }}</guid>
-            <description>![CDATA[ {{ tweet.tweet }} ]]></description>
+            <description><![CDATA[ {{ tweet.tweet }} ]]></description>
         </item>
         {% endfor %}
     </channel>
