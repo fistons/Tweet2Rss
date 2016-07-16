@@ -62,7 +62,8 @@ class FuckingTweet:
     Class representig a fucking tweet
     """
 
-    def __init__(self, tweet_id, tweet, date, author_name, author_account, link):
+    def __init__(self, tweet_id, tweet, date, author_name, author_account, link, is_retweet):
+        self.is_retweet = is_retweet
         self.id = tweet_id
         self.date = date
         self.tweet = tweet
@@ -70,10 +71,14 @@ class FuckingTweet:
         self.author_account = author_account
         self.link = link
 
+        if (self.is_retweet):
+            self.tweet = "RT {} ({}): {}".format(self.author_account, self.author_name, self.tweet)
+
     def __str__(self):
-        return "{} by {} [{}] the {} - [Id. {}] - Link: {}".format(self.tweet, self.author_name
+        return "{} by {} [{}] the {} - [Id. {}] - Link: {} - is a retweet: {}".format(self.tweet, self.author_name
                                                                    , self.author_account, self.date
-                                                                   , self.id, self.link)
+                                                                   , self.id, self.link
+                                                                   , self.is_retweet)
 
 
 class ShittyParser:
@@ -100,7 +105,8 @@ class ShittyParser:
             username = "@" + text['data-screen-name']
             tweet_id = text['data-tweet-id']
             link = ShittyParser.TWITTER_BASE_URL + text['data-permalink-path']
-            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link))
+            is_retweet = text.has_attr('data-retweet-id')
+            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link, is_retweet))
 
 
 class Tweet2Rss(object):
