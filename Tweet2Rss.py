@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 import cherrypy
 from bs4 import BeautifulSoup
 from jinja2 import Template
+import re
 
 """
 Prototype of the web app
@@ -34,9 +35,10 @@ TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-
+IMAGE_REGEX = "(pic.twitter.com/\w+)"
+IMAGE_REGEX = "(https://pbs.twimg.com/media//\w+)"
 TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
     <channel>
         <title>Tweets of {{ tweet_account }}</title>
         <description>Tweets of {{ tweet_account }}</description>
@@ -48,6 +50,11 @@ TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
             <pubDate>{{ tweet.date }}</pubDate>
             <guid>{{ tweet.id }}</guid>
             <description><![CDATA[ {{ tweet.tweet }} ]]></description>
+            {% for img in tweet.images %}
+                <media:group>
+                    <media:content url="{{ img }}" medium="image" type="image/jpeg"/>
+                </media:group>
+            {% endfor %}
         </item>
         {% endfor %}
     </channel>
@@ -62,7 +69,7 @@ class FuckingTweet:
     Class representig a fucking tweet
     """
 
-    def __init__(self, tweet_id, tweet, date, author_name, author_account, link, is_retweet):
+    def __init__(self, tweet_id, tweet, date, author_name, author_account, link, is_retweet, images = []):
         self.is_retweet = is_retweet
         self.id = tweet_id
         self.date = date
@@ -70,6 +77,8 @@ class FuckingTweet:
         self.author_name = author_name
         self.author_account = author_account
         self.link = link
+        self.images = images
+        print(images)
 
         if (self.is_retweet):
             self.tweet = "RT {} ({}): {}".format(self.author_account, self.author_name, self.tweet)
@@ -106,8 +115,11 @@ class ShittyParser:
             tweet_id = text['data-tweet-id']
             link = ShittyParser.TWITTER_BASE_URL + text['data-permalink-path']
             is_retweet = text.has_attr('data-retweet-id')
-            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link, is_retweet))
-
+            images = []
+            for img in text.parent.find_all("img", attrs={'class': None}):
+                images.append(img['src'])
+            self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link, is_retweet, images))
+                
 
 class Tweet2Rss(object):
     def __init__(self):
@@ -133,3 +145,4 @@ class Tweet2Rss(object):
 if __name__ == "__main__":
     cherrypy.config.update(CONFIG_FILE_NAME)
     cherrypy.quickstart(Tweet2Rss(), "/", CONFIG_FILE_NAME)
+
