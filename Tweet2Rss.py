@@ -18,25 +18,6 @@ __license__ = "MIT License"
 __version__ = "1.0-SNAPSHOT"
 __status__ = "prototype"
 
-TEMPLATE = """<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title>Tweets of {{ tweet_account }}</title>
-</head>
-<body>
-    <ul id="navigation">
-    {% for tweet in tweets %}
-        <li id={{ tweet.id }}>
-            <p>{{ tweet.tweet }}</p>
-            <p>by {{ tweet.author_name }} [{{ tweet.author_account }}] - {{ tweet.date }}
-        </li>
-    {% endfor %}
-    </ul>
-</body>
-</html>"""
-
-IMAGE_REGEX = "(pic.twitter.com/\w+)"
-IMAGE_REGEX = "(https://pbs.twimg.com/media//\w+)"
 TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
     <channel>
