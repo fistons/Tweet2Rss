@@ -78,7 +78,6 @@ class FuckingTweet:
         self.author_account = author_account
         self.link = link
         self.images = images
-        print(images)
 
         if (self.is_retweet):
             self.tweet = "RT {} ({}): {}".format(self.author_account, self.author_name, self.tweet)
