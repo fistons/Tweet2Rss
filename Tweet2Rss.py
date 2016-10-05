@@ -6,7 +6,6 @@ from urllib.error import HTTPError
 import cherrypy
 from bs4 import BeautifulSoup
 from jinja2 import Template
-import re
 
 """
 Prototype of the web app
