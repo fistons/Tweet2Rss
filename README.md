@@ -1,4 +1,6 @@
 # Tweet2Rss
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/224125b19843417594cc9886fce8e806)](https://www.codacy.com/app/fistons/Tweet2Rss?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fistons/Tweet2Rss&amp;utm_campaign=Badge_Grade)
+
 Transform Twitter Feeds to Rss
 
 ### What is this?
