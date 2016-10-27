@@ -97,7 +97,7 @@ class ShittyParser:
             for img in text.parent.find_all("img", attrs={'class': None}):
                 images.append(img['src'])
             self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link, is_retweet, images))
-                
+
 class Tweet2Rss(object):
     def __init__(self):
         self.parser = ShittyParser()
