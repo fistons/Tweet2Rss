@@ -8,10 +8,6 @@ import cherrypy
 from bs4 import BeautifulSoup
 from jinja2 import Template
 
-"""
-Prototype of the web app
-"""
-
 __author__ = "Eric \"Fistons\""
 __copyright__ = "Copyright 2016"
 __license__ = "MIT License"
@@ -44,13 +40,12 @@ TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
 
 CONFIG_FILE_NAME = "Tweet2Rss.conf"
 
-
 class FuckingTweet:
     """
     Class representig a fucking tweet
     """
 
-    def __init__(self, tweet_id, tweet, date, author_name, author_account, link, is_retweet, images = []):
+    def __init__(self, tweet_id, tweet, date, author_name, author_account, link, is_retweet, images):
         self.is_retweet = is_retweet
         self.id = tweet_id
         self.date = date
@@ -68,7 +63,6 @@ class FuckingTweet:
                                                                    , self.author_account, self.date
                                                                    , self.id, self.link
                                                                    , self.is_retweet)
-
 
 class ShittyParser:
     """
@@ -104,7 +98,6 @@ class ShittyParser:
                 images.append(img['src'])
             self.tweets.append(FuckingTweet(tweet_id, tweet, time, author, username, link, is_retweet, images))
                 
-
 class Tweet2Rss(object):
     def __init__(self):
         self.parser = ShittyParser()
@@ -125,8 +118,6 @@ class Tweet2Rss(object):
             else:
                 return "Dumb twitter is down again or some retarded bullshits"
 
-
 if __name__ == "__main__":
     cherrypy.config.update(CONFIG_FILE_NAME)
     cherrypy.quickstart(Tweet2Rss(), "/", CONFIG_FILE_NAME)
-
