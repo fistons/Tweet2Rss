@@ -52,6 +52,17 @@ TEMPLATE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
 
 CONFIG_FILE_NAME = "Tweet2Rss.conf"
 
+def rewrite_url(text):
+    """
+    Rewrite the url to something exploitable.
+    """
+
+    # result = re.sub(
+    #    r"\b((?:https?:\/\/)?(?:www\.)?(?:[^\s.]+\.)+\w{2,4}[^\s.]+)\b",
+    #    r"<a href='\1'>\1</a>", text)
+    result = re.sub(
+        r"(pic.twitter.com/[^ ]+)", r"<a href='https://\1'>\1</a>", text)
+    return result
 
 class FuckingTweet:
     """
@@ -91,18 +102,6 @@ class ShittyParser:
     def __init__(self):
         self.tweets = []
 
-    def rewrite_url(self, text):
-        """
-        Rewrite the url to something exploitable.
-        """
-
-        # result = re.sub(
-        #    r"\b((?:https?:\/\/)?(?:www\.)?(?:[^\s.]+\.)+\w{2,4}[^\s.]+)\b",
-        #    r"<a href='\1'>\1</a>", text)
-        result = re.sub(
-            r"(pic.twitter.com/[^ ]+)", r"<a href='https://\1'>\1</a>", text)
-        return result
-
     def parse(self, twitter_account):
         """
         Parse the twitter html page of the account an create a rss feed with it
@@ -118,7 +117,7 @@ class ShittyParser:
         for text in tweet_list:
             tweet_title = text.find(
                 'p', attrs={'class': 'tweet-text'}).get_text(separator=u' ')
-            tweet = "<p>" + self.rewrite_url(tweet_title) + "</p>"
+            tweet = "<p>" + rewrite_url(tweet_title) + "</p>"
             time_string = text.find(
                 'a', attrs={'class': 'tweet-timestamp'})['title']
             time = datetime.datetime.strptime(
